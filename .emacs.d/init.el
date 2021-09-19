@@ -1,0 +1,145 @@
+(setq inhibit-startup-message t)
+
+(setq make-backup-files nil)
+;; tramp auto-save auto-backup dir
+(setq tramp-auto-save-directory "~/.emacs.d/tramp-autosave")
+(setq auto-save-file-name-transforms
+      '((".*" "~/.emacs.d/auto-saves/" t)))
+
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+
+;; tab = 4spaces & offset size = 4spaces
+(setq default-tab-width 4)
+(setq indent-tabs-mode nil)
+(defvaralias 'c-basic-offset 'default-tab-width)
+
+(progn 
+  (global-display-line-numbers-mode)
+  (set-face-attribute 'line-number-current-line nil
+		      :foreground "gold"))
+
+(setq x-select-enable-clipboard t)
+
+;; font
+(set-face-attribute 'default nil
+		    :family "Iosevka"
+		    :height 160
+		    :weight 'normal
+		    :width 'normal) 
+
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.org/packages/"))
+
+(package-initialize)
+
+;; Bootstrap 'use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(use-package try
+  :ensure t)
+
+(use-package which-key
+  :ensure t
+  :config (which-key-mode))
+
+(use-package smartparens
+  :ensure t
+  :config (smartparens-global-mode))
+;;(require 'smartparens-config)
+;;(smartparens-global-mode t)
+
+;(use-package smartparens
+;  :ensure t
+;  :config (smartparens-config))
+
+;;(use-package srcery-theme
+;;  nnn:ensure t
+;;  :config (load-theme 'srcery t))
+
+(use-package dracula-theme
+  :ensure t
+  :config (load-theme 'dracula t))
+;;(use-package zenburn-theme
+;;  :ensure t
+;;  :config (load-theme 'zenburn t))
+
+;; Org-mode stuff
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+;; Ido mode
+(setq indo-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+
+;;(defalias 'list-buffers 'ibuffer)
+(defalias 'list-buffers 'ibuffer-other-window)
+
+;; ace-window
+(use-package ace-window
+  :ensure t
+  :init
+  (progn
+    (global-set-key [remap other-window] 'ace-window)
+    (custom-set-faces
+     '(aw-leading-char-face
+       ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+    ))
+
+;; company-mode
+(use-package company
+  :ensure t
+  :config (global-company-mode))
+;;(require 'company)
+;;(global-company-mode)
+(setq company-idel-delay 0)
+(setq company-mininum-prefix-length 2)
+(setq comapny-selection-wrap-around t)
+
+;; elpy
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
+
+;; python-mode-hooks
+(add-hook 'python-mode-hook
+	  (lambda()
+	    (setq indent-tabs-mode t)
+	    (setq tab-width 4)
+	    (setq python-indent-offset 4)))
+
+;; go-mode
+(use-package go-mode
+  :ensure t
+  :config
+  (add-hook 'before-save-hook 'gofmt-before-save))
+
+(add-hook 'go-mode-hook
+	  (lambda()
+	    (setq indent-tabs-mode t)
+	    (setq tab-width 4)
+	    (setq go-indent-offset 4)))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("c1284dd4c650d6d74cfaf0106b8ae42270cab6c58f78efc5b7c825b6a4580417" default))
+ '(package-selected-packages
+   '(go-mode Dracula company-jedi jedi smartparens dracula-theme ace-window which-key use-package try srcery-theme org-bullets)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0)))))

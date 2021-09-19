@@ -1,0 +1,47 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/snow/" . ".emacs.d/")
+ ("/home/snow/Programming/" . "py/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/snow/Programming/py/"
+ "/home/snow/Programming/go/"
+ "/home/snow/.emacs.d/"
+ "/home/snow/Programming/c/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "racquetball2.py"
+ "wordfreq.py"
+ "stats.py"
+ "avergy4.py"
+ "avergy3.py"
+ "hello.go"
+ "init.el"
+ "test.py"
+ "avergy1.py"
+ "cballl.py"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/snow/Programming/py/" (24893 56289 159910 986000) "wordfreq.py" "stats.py" "avergy4.py" "cballl.py" "racqueball-simc-output.dat" "racquetball.py" "primeNumList.dat" "primeNumber.py" "syracuse.py" "syracuse.dat" "numbers.dat" "avergy3.py" "avergy2.py" "foreverinput.py" "avergy1.py" "quadratic3.py" "happy_birthday.txt" "uname.dat" "wc.py" "userfile.py" "name.dat" "numtotext.py" "username.py" "factorial.py" "change2.py" "../" "./")
+
+ ("/home/snow/.emacs.d/" (24893 37660 497074 428000) "init.el" "ido.last" "tramp-autosave/" "backup-saves/" "auto-saves/" "elpy/" "snippets/" "elpa/" "auto-save-list/" "../" "./")
+
+ ("/home/snow/Programming/go/" (24893 37660 487074 486000) "hello.go" "../" "./")
+
+ ("/home/snow/" (24893 49256 940505 959000) "go/" ".zsh_history" ".lesshst" ".python_history" ".viminfo" "Programming/" ".ghc/" ".var/" ".zcompdump-fedora-5.8" ".mozc/" ".emacs.d/" ".zshrc" ".shell.pre-oh-my-zsh" ".oh-my-zsh/" ".ipython/" ".bash_history" "Videos/" "Pictures/" "Music/" "Documents/" "Public/" "Templates/" "Downloads/" "Desktop/" ".local/" ".config/" ".cache/" ".bashrc" ".bash_profile" ".bash_logout" ".mozilla/" "../" "./")
+
+ ("/home/snow/Programming/" (24893 36403 402952 826000) "go/" "c/" "py/" "../" "./")
+
+ ("/home/snow/Programming/c/" (24880 12097 239508 952000) "a.out" "testfn.c" "../" "./")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t
