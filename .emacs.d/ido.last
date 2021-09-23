@@ -8,6 +8,7 @@
 
 ;; ----- ido-work-directory-list -----
 (
+ "/home/snowrain/.emacs.d/"
  "/home/snow/Programming/py/"
  "/home/snow/.emacs.d/"
  "/home/snow/Programming/go/"
@@ -16,8 +17,8 @@
 
 ;; ----- ido-work-file-list -----
 (
- "mergesort.py"
  "init.el"
+ "mergesort.py"
  "racquetball2.py"
  "wordfreq.py"
  "stats.py"
@@ -30,6 +31,10 @@
 
 ;; ----- ido-dir-file-cache -----
 (
+ ("/home/snowrain/.emacs.d/" (24908 11025 965729 330000) "auto-save-list/" "../" "elpy/" "elpa/" "ido.last" "./" "init.el" "snippets/" "auto-saves/")
+
+ ("/home/snowrain/" (24908 13014 628816 428000) "Downloads/" ".zcompdump-FRX-99-5.8" ".emacs.d/" ".python_history" "../" "Desktop/" ".config/" "Music/" ".viminfo" ".gnupg/" ".pki/" "Templates/" ".themes/" ".bash_history" ".tmux.conf" ".local/" "Programming/" "Pictures/" ".profile" ".icons/" ".oh-my-zsh/" ".dir_colors/" ".shell.pre-oh-my-zsh" "Documents/" "./" ".ssh/" ".mozilla/" ".ipython/" ".zsh_history" ".zshrc" ".xinputrc" ".wget-hsts" ".bashrc" ".cache/" ".bash_logout" "Videos/" "Public/")
+
  ("/home/snow/.emacs.d/" (24894 54328 304597 193000) "session.1039333b78b244cea8163149695140510900000016590078" "init.el" "ido.last" "tramp-autosave/" "backup-saves/" "auto-saves/" "elpy/" "snippets/" "elpa/" "auto-save-list/" "../" "./")
 
  ("/home/snow/" (24894 54414 572739 845000) ".zsh_history" ".zcompdump-fedora-5.8" ".python_history" "go/" ".lesshst" ".viminfo" "Programming/" ".ghc/" ".var/" ".mozc/" ".emacs.d/" ".zshrc" ".shell.pre-oh-my-zsh" ".oh-my-zsh/" ".ipython/" ".bash_history" "Videos/" "Pictures/" "Music/" "Documents/" "Public/" "Templates/" "Downloads/" "Desktop/" ".local/" ".config/" ".cache/" ".bashrc" ".bash_profile" ".bash_logout" ".mozilla/" "../" "./")
