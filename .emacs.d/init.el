@@ -23,7 +23,7 @@
 
 ;; font
 (set-face-attribute 'default nil
-		    :family "Iosevka"
+		    :family "Hack"
 		    :height 160
 		    :weight 'normal
 		    :width 'normal) 
