@@ -107,7 +107,7 @@
 	company-dabbrev-downcase nil
 	company-backends '((company-irony))
 	)
-  :bind ("C-;" . company-common))
+  :bind ("C-;" . company-complete-common))
 
 ;; elpy
 (use-package elpy
@@ -144,7 +144,7 @@
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
   :config
-  (add-hook 'irony-mode-hook 'irony-cbd-autosetup-compile-options))
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
 
 (custom-set-variables
