@@ -225,6 +225,7 @@
   (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
   (define-key eglot-mode-map (kbd "C-c f") 'eglot-format))
 
+
 ;; go-mode
 (use-package go-mode
   :ensure t
@@ -233,6 +234,7 @@
   :config
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save))
+
 
 ;; rust-mode
 (use-package rust-mode
@@ -246,6 +248,25 @@
   ;; (setq lsp-enable-symbol-highlighting nil)
   ;; (setq-default rustic-format-trigger 'on-save)
   )
+
+
+;; typescript-mode
+(use-package typescript-mode
+  :ensure t
+  :defer t
+  :mode (("\\.ts\\'" . typescript-mode)))
+
+(use-package tide
+  :ensure t
+  :defer t
+  :config
+  (add-hook 'typescript-mode-hook
+	    (lambda ()
+	      (tide-setup)
+	      (flycheck-mode t)
+	      (setq flycheck-check-syntax-automatically '(save mode-enabled))
+	      (eldoc-mode t)
+	      (company-mode-on))))
 
 ;; geiser
 (use-package geiser-guile
@@ -268,6 +289,7 @@
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil))
 
+
 ;; ibuffer
 (use-package all-the-icons-ibuffer
   :ensure t
@@ -277,25 +299,6 @@
   :config
   (setq ibuffer-default-sorting-mode 'major-mode))
 
-
-;; ;; whitespace-mode
-;; (use-package whitespace
-;;   :config
-;;   (setq whitespace-style '(face tabs spaces trailing
-;; 				space-before-tab newline indentation empty
-;; 				space-after-tab space-mark tab-mark)))
-;; (defun kang/set-up-whitespace ()
-;;   (interactive)
-;;   (whitespace-mode 1)
-;;   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
-;; (add-hook 'c++-mode-hook 'kang/set-up-whitespace)
-;; (add-hook 'rust-mode 'kang/set-up-whitespace)
-;; (add-hook 'c-mode-hook 'kang/set-up-whitespace)
-;; (add-hook 'emacs-lisp-mode-hook 'kang/set-up-whitespace)
-;; (add-hook 'python-mode-hook 'kang/set-up-whitespace)
-;; (add-hook 'go-mode-hook 'kang/set-up-whitespace)
-;; ;; (add-hook 'c++-mode-hook 'kang/set-up-whitespace)
-;; (add-hook 'c++-mode-hook 'kang/set-up-whitespace)
 
 ;; all the icons
 (use-package all-the-icons
@@ -316,7 +319,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(all-the-icons-dired all-the-icons-ibuffer gcmh move-text zenburn-theme darcula-theme darcula zenburn exec-path-from-shell company-box python-black go-mode dracula-theme which-key try use-package)))
+   '(tide typescript-mode all-the-icons-dired all-the-icons-ibuffer gcmh move-text zenburn-theme darcula-theme darcula zenburn exec-path-from-shell company-box python-black go-mode dracula-theme which-key try use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
