@@ -1,4 +1,4 @@
-;; Default settings
+;; default settings
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (show-paren-mode 1)
@@ -12,6 +12,13 @@
 (setq inhibit-startup-message t)
 
 (savehist-mode 1)
+
+;; message log
+(setq message-log-max 5000)
+
+;; 4 lsp performance
+(setq read-process-output-max (* 2 1024 1024))
+(setq gc-cons-threshold 100000000)
 
 ;; for mac to run shell env
 (when (memq window-system '(mac ns x))
@@ -34,7 +41,7 @@
     ;; from the screen height (for panels, menubars and
     ;; whatnot), then divide by the height of a char to
     ;; get the height we want
-    (add-to-list 'default-frame-alist 
+    (add-to-list 'default-frame-alist
          (cons 'height (/ (- (x-display-pixel-height) 200)
                              (frame-char-height)))))))
 (set-frame-size-according-to-resolution)
@@ -53,7 +60,7 @@
 (setq kill-whole-line t)
 
 ;; display line number
-(progn 
+(progn
   (global-display-line-numbers-mode)
   (setq display-line-numbers-type 'relative)
   (set-face-attribute 'line-number-current-line nil
@@ -81,6 +88,11 @@
   (setq use-package-always-ensure t
 	use-package-expand-minimally t))
 
+;; Garbbage collection magic hack
+(use-package gcmh
+  :ensure t
+  :init (gcmh-mode 1))
+
 (use-package try
   :ensure t)
 
@@ -95,16 +107,19 @@
 (use-package darcula-theme
   :ensure t
   :config (load-theme 'darcula t)
-  (set-frame-font "Inconsolata-20"))
+  (set-frame-font "Hack-18"))
 ;;  (set-frame-font "Iosevka-20"))
 ;;
 ;;(use-package zenburn-theme
 ;;  :ensure t
 ;;  :config (load-theme 'zenburn t))
-;;
-(require 'smartparens-config)
-(smartparens-global-mode)
 
+
+;; smartparens
+(use-package smartparens
+  :ensure t
+  :config
+  (smartparens-global-mode))
 ;; Ido mode
 (setq indo-enable-flex-matching t)
 (setq ido-everywhere t)
@@ -120,7 +135,7 @@
 			  (c-mode . "bsd")
 			  (other . "k&r")))
   (setq-default c-basic-offset kang/indent-width))
-	
+
 
 ;; spell checking
 (use-package flyspell
@@ -131,16 +146,11 @@
 			      (flyspell-prog-mode)))
   (add-hook 'go-mode-hook '(lambda()
 			     (flyspell-prog-mode)))
-  (add-hook 'rustic-mode-hook '(lambda()
+  (add-hook 'rust-mode-hook '(lambda()
 				 (flyspell-prog-mode)))
   (add-hook 'python-mode-hook '(lambda()
 				 (flyspell-prog-mode))))
 
-;; python-mode
-;; (use-package python-black
-;;   :demand t
-;;   :after python
-;;   :hook (python-mode . python-black-on-save-mode-enable-dwim))
 
 ;; company-mode
 (use-package company
@@ -155,7 +165,7 @@
 	company-tooltip-limit 12
 	)
   (setq company-tooltip-minimum-width 60)
-  (setq company-tooltip-margin 60)	
+  (setq company-tooltip-margin 60)
   (setq company-tooltip-align-annotations t)
   :bind
   (:map company-active-map
@@ -169,7 +179,7 @@
 (use-package company-box
   :hook (company-mode . company-box-mode)
   :config
-  (add-to-list 'company-box-frame-parameters '(font . "Hack-20")))
+  (add-to-list 'company-box-frame-parameters '(font . "Hack-16")))
 
 
 ;; lsp-mode
@@ -193,19 +203,20 @@
 ;;   (setq lsp-ui-sideline-show-diagnostics t)
 ;;   (setq lsp-ui-sideline-delay 0.5))
 
+;; eglot lsp
 (use-package eglot
   :ensure t
   :config
   (add-to-list 'eglot-server-programs '(c-mode . ("clangd")))
   (add-to-list 'eglot-server-programs '(c++-mode . ("clangd")))
   (add-to-list 'eglot-server-programs '(go-mode . ("gopls")))
-  (add-to-list 'eglot-server-programs '(rustic-mode . ("rust-analyzer")))
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
   (add-to-list 'eglot-server-programs '(python-mode . ("pyls")))
   (add-hook 'eglot--managed-mode-hook (lambda() (flymake-mode -1)))
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
   (add-hook 'go-mode-hook 'eglot-ensure)
-  (add-hook 'rustic-mode-hook 'eglot-ensure)
+  (add-hook 'rust-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
   ;; format on save
   (add-hook 'c-mode-hook '(lambda() (add-hook 'before-save-hook 'eglot-format-buffer nil t)))
@@ -223,18 +234,19 @@
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save))
 
-;; config for rust-mode
-(use-package rustic
+;; rust-mode
+(use-package rust-mode
   :ensure t
   :defer t
-  :mode ("\\.rs$" . rustic-mode)
+  :mode ("\\.rs$" . rust-mode)
   :config
-  (setq rustic-lsp-client 'eglot)
-  (setq lsp-eldoc-hook nil)
-  (setq lsp-signature-auto-activate nil)
-  (setq lsp-enable-symbol-highlighting nil)
-  (setq-default rustic-format-trigger 'on-save))
-  
+  (setq rust-format-on-save t)
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-signature-auto-activate nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq-default rustic-format-trigger 'on-save)
+  )
+
 ;; geiser
 (use-package geiser-guile
   :ensure t)
@@ -248,13 +260,63 @@
   (global-set-key (kbd "M-n") 'move-text-down))
 
 
+;; auto-revert
+(use-package autorevert
+  :config
+  ;; also auto refresh dired, but be quiet about it
+  (global-auto-revert-mode t)
+  (setq global-auto-revert-non-file-buffers t)
+  (setq auto-revert-verbose nil))
+
+;; ibuffer
+(use-package all-the-icons-ibuffer
+  :ensure t
+  :config
+  (all-the-icons-ibuffer-mode 1))
+(use-package ibuffer
+  :config
+  (setq ibuffer-default-sorting-mode 'major-mode))
+
+
+;; ;; whitespace-mode
+;; (use-package whitespace
+;;   :config
+;;   (setq whitespace-style '(face tabs spaces trailing
+;; 				space-before-tab newline indentation empty
+;; 				space-after-tab space-mark tab-mark)))
+;; (defun kang/set-up-whitespace ()
+;;   (interactive)
+;;   (whitespace-mode 1)
+;;   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+;; (add-hook 'c++-mode-hook 'kang/set-up-whitespace)
+;; (add-hook 'rust-mode 'kang/set-up-whitespace)
+;; (add-hook 'c-mode-hook 'kang/set-up-whitespace)
+;; (add-hook 'emacs-lisp-mode-hook 'kang/set-up-whitespace)
+;; (add-hook 'python-mode-hook 'kang/set-up-whitespace)
+;; (add-hook 'go-mode-hook 'kang/set-up-whitespace)
+;; ;; (add-hook 'c++-mode-hook 'kang/set-up-whitespace)
+;; (add-hook 'c++-mode-hook 'kang/set-up-whitespace)
+
+;; all the icons
+(use-package all-the-icons
+  :ensure t)
+(use-package all-the-icons-dired
+  :ensure t)
+
+;; dired-x
+(use-package direx
+  :after dired
+  :defer t
+  :commands dired-jump)
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(move-text zenburn-theme darcula-theme darcula zenburn exec-path-from-shell company-box python-black go-mode dracula-theme which-key try use-package)))
+   '(all-the-icons-dired all-the-icons-ibuffer gcmh move-text zenburn-theme darcula-theme darcula zenburn exec-path-from-shell company-box python-black go-mode dracula-theme which-key try use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
