@@ -3,23 +3,33 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
+let 
+    unstable = import <nixos-unstable> {config = { allowUnfree = true; }; };
 
+in 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
-  
-  # ntfs-3g
-  #boot.supportedFilesystems = [ "ntfs" ];
-  # Use the systemd-boot EFI boot loader.
-  #boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.devices = [ "/dev/sda" "/dev/sdb" ];
-  boot.loader.grub.useOSProber = true;
-
+ 
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.timeout = 15;
+  boot.loader.systemd-boot.enable = false;
+  boot.loader.grub ={ 
+    enable = true;
+    efiSupport = true;
+    device = "nodev";
+    extraEntries = ''
+      menuentry "Windows" {
+        insmod vfat
+	insmod part_gpt
+	insmod chain
+	search --no-floppy --fs-uuid  7C06-AAD2 --set root
+	chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+      }
+      '';
+  };
 
   time.hardwareClockInLocalTime = true;
 
@@ -61,6 +71,11 @@
  
   # fonts
   fonts.fonts = with pkgs; [
+    emojione
+    fira-mono
+    hack-font
+    terminus_font
+    ubuntu_font_family
     fira-code
     source-code-pro
     noto-fonts
@@ -113,7 +128,6 @@
   #extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   #};
 
-
   # Nvidia drivers are unfree
   nixpkgs.config.allowUnfree = true;
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -121,12 +135,13 @@
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
+      environment.systemPackages = with pkgs; [
   # theme
   nordic
   # editor
   neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  emacs
+  #emacs
+  unstable.emacs
   vscode
   # terminal
   kitty
@@ -146,12 +161,15 @@
   gnome.gnome-tweaks
   feh
   xclip
+  htop
   # web browser
   firefox
   google-chrome
   # dev
-  clang
-  gcc
+  clang_13
+  gcc11
+  gdb
+  cmake
   python310
   jdk
   chez
@@ -163,7 +181,9 @@
   scala
   sbt
   ghc
-  go
+  #go
+  #unstable.go
+  unstable.go_1_18
   R
   rstudio
   android-studio
@@ -175,11 +195,17 @@
   # vm
   docker
   qemu 
+  # net
+  openssl
+  openvpn
+  vagrant
   # etc
+  pinta
   ffmpeg
   mpv
   discord
   zathura
+  unstable.notion-app-enhanced
   ];
   
  # Some programs need SUID wrappers, can be configured further or are
@@ -227,5 +253,7 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.11"; # Did you read the comment?
+
+  
 
 }
