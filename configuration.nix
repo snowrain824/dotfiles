@@ -11,15 +11,16 @@
     ];
   
   # ntfs-3g
-  boot.supportedFilesystems = [ "ntfs" ];
+  #boot.supportedFilesystems = [ "ntfs" ];
   # Use the systemd-boot EFI boot loader.
   #boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
-  boot.loader.grub.devices = [ "/dev/sdd" ];
+  boot.loader.grub.devices = [ "/dev/sda" "/dev/sdb" ];
   boot.loader.grub.useOSProber = true;
-  
+
+
   time.hardwareClockInLocalTime = true;
 
 
@@ -51,8 +52,10 @@
   keyMap = "us";
   };
   i18n.inputMethod = {
-    enabled = "fcitx";
-    fcitx.engines = with pkgs.fcitx-engines;
+    #enabled = "fcitx";
+    #fcitx.engines = with pkgs.fcitx-engines;
+    enabled = "ibus";
+    ibus.engines = with pkgs.ibus-engines;
     [ mozc hangul rime ];
   };
  
@@ -60,7 +63,6 @@
   fonts.fonts = with pkgs; [
     fira-code
     source-code-pro
-    source-han-code-jp
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
@@ -68,16 +70,22 @@
     dina-font
     proggyfonts
     roboto-mono
+    iosevka
+    jetbrains-mono
+    cascadia-code
   ]; 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
 
   # Enable the Plasma 5 Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-  
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
 
+  # bspwm
+  services.xserver.windowManager.bspwm.enable = true;
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
@@ -114,33 +122,67 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  os-prober
-  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  # theme
+  nordic
+  # editor
+  neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  emacs
+  vscode
+  # terminal
+  kitty
+  # utilities
   wget
   curl
   git
-  clang
-  gcc
-  firefox
-  emacs
-  kitty
   zsh
   tmux
-  docker
-  neovim
-  zip
+  screen
   unzip
+  unrar
+  polybar
+  rofi
+  ranger
+  gnome-breeze
+  gnome.gnome-tweaks
+  feh
+  xclip
+  # web browser
+  firefox
+  google-chrome
+  # dev
+  clang
+  gcc
   python310
   jdk
   chez
-  google-chrome
+  python39Packages.ipython
+  python39Packages.pip
+  python-language-server
+  nodejs
+  rustup
+  scala
+  sbt
+  ghc
+  go
+  R
+  rstudio
+  android-studio
+  jetbrains.pycharm-community
+  jetbrains.idea-community
+  # lsp
+  rust-analyzer
+  gopls
+  # vm
+  docker
+  qemu 
+  # etc
+  ffmpeg
+  mpv
+  discord
+  zathura
   ];
   
-   #nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-   #   "google-chrome"
-   # ];
-
-  # Some programs need SUID wrappers, can be configured further or are
+ # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
   # programs.gnupg.agent = {
@@ -148,13 +190,27 @@
   #   enableSSHSupport = true;
   # };
   programs.zsh.enable = true;
+  programs.zsh.syntaxHighlighting.enable = true;
+  programs.zsh.autosuggestions.enable = true;
   programs.zsh.ohMyZsh = {
     enable = true;
     plugins = [ "git" "man" ];
     theme = "lambda";
   };
-  # List services that you want to enable:
 
+
+  # List services that you want to enable:
+  
+  # Auto upgrade
+  system.autoUpgrade.enable = true;
+
+  nix = {
+  autoOptimiseStore = true;
+  # Automatically trigger garbage collection
+  gc.automatic = true;
+  gc.dates = "weekly";
+  gc.options = "--delete-older-than 30d";
+  };
   # Enable the OpenSSH daemon.
    services.openssh.enable = true;
 
@@ -173,4 +229,3 @@
   system.stateVersion = "21.11"; # Did you read the comment?
 
 }
-
