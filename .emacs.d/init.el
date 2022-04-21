@@ -104,12 +104,15 @@
 ;;  :ensure t
 ;;  :config (load-theme 'dracula t)
 ;;  (set-frame-font "Iosevka-20"))
-(use-package darcula-theme
-  :ensure t
-  :config (load-theme 'darcula t)
-  (set-frame-font "Hack-18"))
+;; (use-package darcula-theme
+;;   :ensure t
+;;   :config (load-theme 'darcula t)
+;;   (set-frame-font "Hack-18"))
 ;;  (set-frame-font "Iosevka-20"))
-;;
+(use-package gruvbox-theme
+  :ensure t
+  :config (load-theme 'gruvbox-dark-soft t)
+  (set-frame-font "Iosevka-18"))
 ;;(use-package zenburn-theme
 ;;  :ensure t
 ;;  :config (load-theme 'zenburn t))
@@ -334,7 +337,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(yasnippet-snippets yasnippet tide typescript-mode all-the-icons-dired all-the-icons-ibuffer gcmh move-text zenburn-theme darcula-theme darcula zenburn exec-path-from-shell company-box python-black go-mode dracula-theme which-key try use-package)))
+   '(gruvbox-theme yasnippet-snippets yasnippet tide typescript-mode all-the-icons-dired all-the-icons-ibuffer gcmh move-text zenburn-theme darcula-theme darcula zenburn exec-path-from-shell company-box python-black go-mode dracula-theme which-key try use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
